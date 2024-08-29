@@ -1,0 +1,284 @@
+/* Styles de base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+html, body {
+    height: 100%;
+    background-color: #f4f7fc;
+    color: #333;
+    font-size: 16px;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Barre de navigation latérale */
+.sidebar {
+    width: 220px;
+    height: 100vh;
+    background-color: skyblue;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+}
+
+.sidebar .logo {
+    display: block;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.sidebar .logo img {
+    width: 100px;
+    height: auto;
+}
+
+.sidebar ul {
+    list-style: none;
+}
+
+.sidebar ul li {
+    margin: 15px 0;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    display: block;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.sidebar ul li a:hover {
+    background-color: whitesmoke;
+    color: #333;
+}
+
+.sidebar ul li a.active {
+    background-color: #ffffff;
+    color: #333;
+}
+
+/* Conteneur principal */
+.main-content {
+    margin-left: 220px;
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    transition: margin-left 0.3s ease;
+}
+
+/* En-têtes */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+/* Cartes */
+.card {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.card-header {
+    background-color: skyblue;
+    color: #ffffff;
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+    border-radius: 8px 8px 0 0;
+    font-weight: 600;
+}
+
+.card-body {
+    padding: 15px;
+}
+
+/* Tableaux */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.table th, .table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+}
+
+.table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Boutons */
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-primary {
+    background-color: #ff8800;
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background-color: #e07b00;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: #ffffff;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+.btn-success {
+    background-color: #28a745;
+    color: #ffffff;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: #ffffff;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+/* Alertes */
+.alert {
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.alert-info {
+    background-color: #d9edf7;
+    color: #31708f;
+}
+
+.alert-success {
+    background-color: #dff0d8;
+    color: #3c763d;
+}
+
+.alert-danger {
+    background-color: #f2dede;
+    color: #a94442;
+}
+
+/* Pied de page */
+.footer {
+    background-color: #ffffff;
+    border-top: 1px solid #ddd;
+    padding: 20px;
+    text-align: center;
+    color: #333;
+    width: 100%;
+    margin-top: auto;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Conteneur de tableau de bord */
+.dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Styles pour les formulaires */
+form {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Styles pour les labels du formulaire */
+form .form-label {
+    font-weight: bold;
+    margin-bottom: 8px;
+    display: block;
+}
+
+/* Styles pour les champs de texte et les zones de texte */
+form .form-control, form .form-select {
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 1rem;
+    width: 100%;
+    margin-bottom: 16px;
+}
+
+/* Styles pour les boutons du formulaire */
+form .btn {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+form .btn:hover {
+    background-color: #0056b3;
+    transition: background-color 0.3s;
+}
+
+/* Styles pour les messages d'erreur */
+form .error-message {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: -12px;
+    margin-bottom: 12px;
+}
+
+/* Styles pour les éléments du formulaire en plusieurs colonnes */
+form .form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+/* Styles pour les éléments de formulaire en colonnes */
+form .form-group {
+    flex: 1;
+    min-width: 250px;
+}

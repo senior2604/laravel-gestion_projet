@@ -1,0 +1,111 @@
+/* Réinitialisation des marges et des espacements */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Styles globaux */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Conteneur principal */
+.container {
+    width: 100%;
+    max-width: 400px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px;
+}
+
+/* Conteneur du logo */
+.logo-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Styles du logo */
+.logo-container img {
+    max-width: 150px;
+    height: auto;
+}
+
+/* Titre du formulaire */
+.container h1 {
+    color: skyblue;
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Styles des groupes de formulaires */
+.form-group {
+    margin-bottom: 15px;
+}
+
+/* Styles des labels */
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+/* Styles des champs de formulaire */
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+/* Styles des champs de formulaire au focus */
+.form-control:focus {
+    border-color: skyblue;
+    box-shadow: 0 0 0 0.2rem rgba(135, 206, 235, 0.25); /* skyblue */
+}
+
+/* Styles des boutons */
+.btn-primary {
+    background-color: skyblue;
+    border: none;
+    color: #ffffff;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    width: 100%;
+}
+
+/* Styles des boutons au survol */
+.btn-primary:hover {
+    background-color: #87ceeb; /* lighter skyblue */
+}
+
+/* Styles pour les liens de redirection */
+.text-center {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.text-center a {
+    color: skyblue;
+    text-decoration: none;
+}
+
+.text-center a:hover {
+    text-decoration: underline;
+}

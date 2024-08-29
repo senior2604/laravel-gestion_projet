@@ -1,0 +1,150 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Project;
+use App\Models\Task;
+use App\Models\User;
+
+class ProjectManagerController extends Controller
+{
+    // Affiche tous les projets du chef de projet connecté
+    public function index()
+    {
+        $user = auth()->user();
+        $projects = Project::where('project_manager_id', $user->id)->get();
+        return view('project_manager.index', compact('projects'));
+    }
+
+    // Affiche les détails d'un projet spécifique
+    public function show($id)
+    {
+        $project = Project::with('tasks', 'users')->findOrFail($id);
+        return view('project_manager.show', compact('project'));
+    }
+
+    // Affiche le formulaire pour créer un nouveau projet
+    public function create()
+    {
+        return view('project_manager.create');
+    }
+
+    // Stocke un nouveau projet dans la base de données
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
+
+        $user = auth()->user();
+        $project = Project::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'project_manager_id' => $user->id,
+        ]);
+
+        return redirect()->route('project_manager.index')->with('success', 'Projet créé avec succès.');
+    }
+
+    // Affiche le formulaire pour éditer un projet
+    public function edit($id)
+    {
+        $project = Project::findOrFail($id);
+        return view('project_manager.edit', compact('project'));
+    }
+
+    // Met à jour les informations d'un projet
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
+
+        $project = Project::findOrFail($id);
+        $project->update([
+            'name' => $request->name,
+            'description' => $request->description,
+        ]);
+
+        return redirect()->route('project_manager.show', $project->id)->with('success', 'Projet mis à jour avec succès.');
+    }
+
+    // Supprime un projet
+    public function destroy($id)
+    {
+        $project = Project::findOrFail($id);
+        $project->delete();
+
+        return redirect()->route('project_manager.index')->with('success', 'Projet supprimé avec succès.');
+    }
+
+    // Affiche le formulaire pour créer une nouvelle tâche pour un projet spécifique
+    public function createTask($projectId)
+    {
+        $project = Project::findOrFail($projectId);
+        return view('project_manager.create_task', compact('project'));
+    }
+
+    // Stocke une nouvelle tâche dans un projet
+    public function storeTask(Request $request, $projectId)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'assigned_to' => 'nullable|exists:users,id',
+            'status' => 'required|string|in:à faire,en cours,terminé',
+        ]);
+
+        $project = Project::findOrFail($projectId);
+
+        $task = $project->tasks()->create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'assigned_to' => $request->assigned_to,
+            'status' => $request->status,
+        ]);
+
+        return redirect()->route('project_manager.show', $projectId)->with('success', 'Tâche créée avec succès.');
+    }
+
+    // Affiche le formulaire pour éditer une tâche
+    public function editTask($projectId, $taskId)
+    {
+        $project = Project::findOrFail($projectId);
+        $task = Task::findOrFail($taskId);
+        return view('project_manager.edit_task', compact('project', 'task'));
+    }
+
+    // Met à jour les informations d'une tâche
+    public function updateTask(Request $request, $projectId, $taskId)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'assigned_to' => 'nullable|exists:users,id',
+            'status' => 'required|string|in:à faire,en cours,terminé',
+        ]);
+
+        $task = Task::findOrFail($taskId);
+        $task->update([
+            'title' => $request->title,
+            'description' => $request->description,
+            'assigned_to' => $request->assigned_to,
+            'status' => $request->status,
+        ]);
+
+        return redirect()->route('project_manager.show', $projectId)->with('success', 'Tâche mise à jour avec succès.');
+    }
+
+    // Supprime une tâche d'un projet
+    public function destroyTask($projectId, $taskId)
+    {
+        $task = Task::findOrFail($taskId);
+        $task->delete();
+
+        return redirect()->route('project_manager.show', $projectId)->with('success', 'Tâche supprimée avec succès.');
+    }
+}

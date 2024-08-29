@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détails du Projet</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+</head>
+<body>
+
+<div class="sidebar">
+    <div class="logo">
+        <img src="{{ asset('image/logoP.png') }}" alt="Logo">
+    </div>
+    <ul>
+        <li><a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">Tableau de Bord</a></li>
+        <li><a href="{{ route('projects.index') }}" class="{{ request()->routeIs('projects.*') ? 'active' : '' }}">Projets</a></li>
+        <li><a href="{{ route('tasks.index') }}" class="{{ request()->routeIs('tasks.*') ? 'active' : '' }}">Tâches</a></li>
+        <!-- Ajouter d'autres liens selon les besoins -->
+    </ul>
+</div>
+
+<div class="main-content">
+    <header>
+        <h1 align="center">Détails du Projet</h1>
+    </header>
+
+    <main>
+        <div class="card">
+            <div class="card-body">
+                <p><strong>Nom:</strong> {{ $project->name }}</p>
+                <p><strong>Statut:</strong> {{ $project->status }}</p>
+                <a href="{{ route('projects.edit', $project) }}" class="btn btn-warning">Modifier le Projet</a>
+                <a href="{{ route('projects.index') }}" class="btn btn-secondary">Retour aux Projets</a>
+            </div>
+        </div>
+    </main>
+
+
+</div>
+<footer class="footer">
+    <span>&copy; {{ date('Y') }} Application de Gestion de Projets. Tous droits réservés.</span>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.min.js"></script>
+</body>
+</html>
