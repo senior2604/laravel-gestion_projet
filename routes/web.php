@@ -130,9 +130,11 @@ Route::middleware('auth')->group(function () {
 });
 Route::get('/statistiques', [StatisticsController::class, 'index'])->name('statistics.index');
 
-Route::get('/fetch-events', [CalendarController::class, 'fetchEvents'])->name('calendar.fetchEvents');
-Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');
 Route::resource('projects', ProjectController::class);
 Route::post('/admin/create-project', [AdminController::class, 'createProject'])->name('admin.createProject');
 Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('projects.show');
 Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
+
+Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar');
+
+Route::get('/generate-report', [ReportController::class, 'generateReport']);

@@ -29,8 +29,23 @@
     <main>
         <div class="card mb-4">
             <div class="card-body">
-                <p><strong>Nom:</strong> {{ $project->name }}</p>
-                <p><strong>Statut:</strong> {{ $project->status }}</p>
+                <dl class="row">
+                    <dt class="col-sm-3">Nom:</dt>
+                    <dd class="col-sm-9">{{ $project->name }}</dd>
+
+                    <dt class="col-sm-3">Description:</dt>
+                    <dd class="col-sm-9">{{ $project->description }}</dd>
+
+                    <dt class="col-sm-3">Date de Début:</dt>
+                    <dd class="col-sm-9">{{ $project->start_date->format('d/m/Y') }}</dd>
+
+                    <dt class="col-sm-3">Date de Fin:</dt>
+                    <dd class="col-sm-9">{{ $project->end_date->format('d/m/Y') }}</dd>
+
+                    <dt class="col-sm-3">Statut:</dt>
+                    <dd class="col-sm-9">{{ ucfirst($project->status) }}</dd>
+                </dl>
+
                 <div class="d-flex justify-content-start">
                     <a href="{{ route('projects.edit', $project) }}" class="btn btn-warning me-2">Modifier le Projet</a>
                     <a href="{{ route('projects.index') }}" class="btn btn-secondary">Retour aux Projets</a>

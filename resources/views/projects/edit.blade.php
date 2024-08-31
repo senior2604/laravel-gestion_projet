@@ -32,6 +32,7 @@
                 @csrf
                 @method('PUT')
 
+                <!-- Nom du Projet -->
                 <div class="mb-3">
                     <label for="name" class="form-label">Nom du Projet</label>
                     <input type="text" id="name" name="name" value="{{ old('name', $project->name) }}" class="form-control" required>
@@ -40,6 +41,7 @@
                     @enderror
                 </div>
 
+                <!-- Description du Projet -->
                 <div class="mb-3">
                     <label for="description" class="form-label">Description</label>
                     <textarea id="description" name="description" class="form-control" required>{{ old('description', $project->description) }}</textarea>
@@ -48,6 +50,7 @@
                     @enderror
                 </div>
 
+                <!-- Date de Début -->
                 <div class="mb-3">
                     <label for="start_date" class="form-label">Date de Début</label>
                     <input type="date" id="start_date" name="start_date" value="{{ old('start_date', $project->start_date) }}" class="form-control" required>
@@ -56,6 +59,7 @@
                     @enderror
                 </div>
 
+                <!-- Date de Fin -->
                 <div class="mb-3">
                     <label for="end_date" class="form-label">Date de Fin</label>
                     <input type="date" id="end_date" name="end_date" value="{{ old('end_date', $project->end_date) }}" class="form-control" required>
@@ -64,6 +68,7 @@
                     @enderror
                 </div>
 
+                <!-- Statut du Projet -->
                 <div class="mb-3">
                     <label for="status" class="form-label">Statut</label>
                     <select id="status" name="status" class="form-control" required>
@@ -76,10 +81,40 @@
                     @enderror
                 </div>
 
+                <!-- Chef de Projet -->
+                <div class="mb-3">
+                    <label for="project_manager_id" class="form-label">Chef de Projet</label>
+                    <select id="project_manager_id" name="project_manager_id" class="form-control" required>
+                        @foreach($users as $user)
+                            <option value="{{ $user->id }}" {{ $user->id == $project->project_manager_id ? 'selected' : '' }}>
+                                {{ $user->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('project_manager_id')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <!-- Membres de l'Équipe -->
+                <div class="mb-3">
+                    <label for="team_members" class="form-label">Membres de l'Équipe</label>
+                    <select id="team_members" name="team_members[]" class="form-control" multiple required>
+                        @foreach($users as $user)
+                            <option value="{{ $user->id }}" {{ in_array($user->id, $project->team_members) ? 'selected' : '' }}>
+                                {{ $user->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    <small class="form-text">Maintenez la touche Ctrl (Windows) ou Cmd (Mac) pour sélectionner plusieurs membres.</small>
+                    @error('team_members')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <!-- Bouton de Soumission -->
                 <button type="submit" class="btn btn-primary">Sauvegarder les Modifications</button>
             </form>
-
-
         </div>
     </div>
 </div>

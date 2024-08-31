@@ -9,36 +9,22 @@ class Project extends Model
 {
     use HasFactory;
 
-    // Définir les attributs modifiables
     protected $fillable = [
-        'name',
-        'description',
-        'status',
-        'start_date',
-        'end_date',
-        'budget',
-        'user_id',
+        'name', 'description', 'status', 'start_date', 'end_date', 'budget', 'project_manager_id'
     ];
 
-    // Définir la table si elle est différente du nom par défaut
-    protected $table = 'projects';
-
-    // Définir les dates pour la gestion des timestamps
-    protected $dates = ['start_date', 'end_date'];
-
-    // Optionnel: définir la relation avec les utilisateurs
-    public function users()
+    public function manager()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsTo(User::class, 'project_manager_id');
     }
 
-    // Optionnel: ajouter une méthode pour formater le statut
-    public function getStatusAttribute($value)
+    public function teamMembers()
     {
-        return ucfirst($value); // Convertit le statut en majuscule
+        return $this->belongsToMany(User::class, 'project_user');
     }
-    public function members()
-    {
-        return $this->belongsToMany(User::class, 'project_members');
-    }
+    // Définissez les attributs qui doivent être castés en types spécifiques
+    protected $casts = [
+        'start_date' => 'datetime',
+        'end_date' => 'datetime',
+    ];
 }

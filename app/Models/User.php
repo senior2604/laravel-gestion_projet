@@ -14,23 +14,17 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role',
     ];
 
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    // Relation Many-to-Many avec les projets
-    public function projects()
+    // Relation avec le rôle de chef de projet
+    public function managedProjects()
     {
-        return $this->belongsToMany(Project::class, 'project_members');
+        return $this->hasMany(ProjectManager::class);
     }
 
-    // Relation One-to-Many avec les tâches
-    public function tasks()
+    // Relation avec les projets en tant que membre
+    public function projectMemberships()
     {
-        return $this->hasMany(Task::class);
+        return $this->hasMany(ProjectMember::class);
     }
 }

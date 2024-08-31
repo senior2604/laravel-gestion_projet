@@ -38,27 +38,37 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Nom</th>
+                                <th>Description</th>
+                                <th>Date de Début</th>
+                                <th>Date de Fin</th>
                                 <th>Statut</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($projects as $project)
+                            @forelse ($projects as $project)
                                 <tr>
                                     <td>{{ $project->id }}</td>
                                     <td>{{ $project->name }}</td>
-                                    <td>{{ $project->status }}</td>
+                                    <td>{{ Str::limit($project->description, 50) }}</td>
+                                    <td>{{ $project->start_date->format('d/m/Y') }}</td>
+                                    <td>{{ $project->end_date->format('d/m/Y') }}</td>
+                                    <td>{{ ucfirst($project->status) }}</td>
                                     <td>
-                                        <a href="{{ route('projects.show', $project) }}" class="btn btn-info">Voir</a>
-                                        <a href="{{ route('projects.edit', $project) }}" class="btn btn-warning">Modifier</a>
+                                        <a href="{{ route('projects.show', $project) }}" class="btn btn-info btn-sm">Voir</a>
+                                        <a href="{{ route('projects.edit', $project) }}" class="btn btn-warning btn-sm">Modifier</a>
                                         <form action="{{ route('projects.destroy', $project) }}" method="POST" style="display:inline;">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce projet ?')">Supprimer</button>
+                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce projet ?')">Supprimer</button>
                                         </form>
                                     </td>
                                 </tr>
-                            @endforeach
+                            @empty
+                                <tr>
+                                    <td colspan="7" class="text-center">Aucun projet trouvé.</td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
@@ -66,7 +76,7 @@
         </div>
     </main>
 
-    <footer class="footer">
+    <footer class="footer mt-auto">
         <span>&copy; {{ date('Y') }} Application de Gestion de Projets. Tous droits réservés.</span>
     </footer>
 </div>
