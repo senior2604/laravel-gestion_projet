@@ -37,4 +37,8 @@ class Project extends Model
     {
         return ucfirst($value); // Convertit le statut en majuscule
     }
+    public function members()
+    {
+        return $this->belongsToMany(User::class, 'project_members');
+    }
 }

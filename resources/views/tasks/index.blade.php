@@ -60,10 +60,11 @@
                     <button type="submit" class="btn btn-primary">Créer la Tâche</button>
                 </form>
             </main>
-            <footer class="footer mt-4">
-                <p>&copy; {{ date('Y') }} Application de Gestion de Projets</p>
-            </footer>
+
         </div>
+        <footer class="footer mt-4">
+            <p>&copy; {{ date('Y') }} Application de Gestion de Projets</p>
+        </footer>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>

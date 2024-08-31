@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Task;
 use App\Models\Project;
-use App\Models\User; // Importation du modèle User
+use App\Models\User;
+use App\Models\ProjectMember; // Importer le modèle ProjectMember
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
@@ -13,7 +14,8 @@ class TaskController extends Controller
     public function index()
     {
         $tasks = Task::all();
-        return view('tasks.index', compact('tasks'));
+        $users = User::all();
+        return view('tasks.index', compact('tasks', 'users'));
     }
 
     // Affiche le formulaire de création d'une tâche
@@ -32,8 +34,15 @@ class TaskController extends Controller
             'description' => 'nullable|string',
             'status' => 'required|in:à faire,en cours,terminé',
             'project_id' => 'required|exists:projects,id',
-            'user_id' => 'required|exists:users,id', // Validation ajoutée
+            'user_id' => 'required|exists:users,id',
         ]);
+
+        // Vérifier que l'utilisateur est membre du projet sélectionné
+        if (!ProjectMember::where('project_id', $request->project_id)
+                          ->where('user_id', $request->user_id)
+                          ->exists()) {
+            return redirect()->back()->withErrors(['user_id' => 'L\'utilisateur sélectionné n\'est pas membre du projet.']);
+        }
 
         Task::create($request->all());
 
@@ -56,8 +65,15 @@ class TaskController extends Controller
             'description' => 'nullable|string',
             'status' => 'required|in:à faire,en cours,terminé',
             'project_id' => 'required|exists:projects,id',
-            'user_id' => 'required|exists:users,id', // Validation ajoutée
+            'user_id' => 'required|exists:users,id',
         ]);
+
+        // Vérifier que l'utilisateur est membre du projet sélectionné
+        if (!ProjectMember::where('project_id', $request->project_id)
+                          ->where('user_id', $request->user_id)
+                          ->exists()) {
+            return redirect()->back()->withErrors(['user_id' => 'L\'utilisateur sélectionné n\'est pas membre du projet.']);
+        }
 
         $task->update($request->all());
 

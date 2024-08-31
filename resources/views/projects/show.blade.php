@@ -23,23 +23,25 @@
 
 <div class="main-content">
     <header>
-        <h1 align="center">Détails du Projet</h1>
+        <h1 class="text-center my-4">Détails du Projet</h1>
     </header>
 
     <main>
-        <div class="card">
+        <div class="card mb-4">
             <div class="card-body">
                 <p><strong>Nom:</strong> {{ $project->name }}</p>
                 <p><strong>Statut:</strong> {{ $project->status }}</p>
-                <a href="{{ route('projects.edit', $project) }}" class="btn btn-warning">Modifier le Projet</a>
-                <a href="{{ route('projects.index') }}" class="btn btn-secondary">Retour aux Projets</a>
+                <div class="d-flex justify-content-start">
+                    <a href="{{ route('projects.edit', $project) }}" class="btn btn-warning me-2">Modifier le Projet</a>
+                    <a href="{{ route('projects.index') }}" class="btn btn-secondary">Retour aux Projets</a>
+                </div>
             </div>
         </div>
     </main>
 
-
 </div>
-<footer class="footer">
+
+<footer class="footer mt-4 py-3 bg-light text-center">
     <span>&copy; {{ date('Y') }} Application de Gestion de Projets. Tous droits réservés.</span>
 </footer>
 

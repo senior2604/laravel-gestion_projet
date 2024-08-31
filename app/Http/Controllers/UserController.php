@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Project;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -14,6 +15,8 @@ class UserController extends Controller
     {
         return view('auth.register');
     }
+
+    // Valide un utilisateur et définit son rôle
     public function validateUser($id)
     {
         $user = User::find($id);
@@ -22,9 +25,8 @@ class UserController extends Controller
             // Si le rôle est inconnu, le définir en tant que membre
             if ($user->role === 'inconnu') {
                 $user->role = 'membre';
-            }
-            else {
-
+            } else {
+                // Ce rôle est mis à jour ici, mais vous pouvez ajuster selon vos besoins
                 $user->role = 'chef_de_projet';
             }
 
@@ -38,7 +40,6 @@ class UserController extends Controller
 
         return redirect()->route('admin.dashboard')->with('error', 'Utilisateur non trouvé.');
     }
-
 
     // Crée un nouvel utilisateur
     public function store(Request $request)
@@ -114,7 +115,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         $request->validate([
-            'role' => 'required|in:admin,chef_de_projet,membre', // Rôles valides
+            'role' => 'required|in:admin,chef_de_projet,membre',
         ]);
 
         // Vérifie que l'utilisateur n'a pas le rôle 'inconnu'
@@ -126,6 +127,40 @@ class UserController extends Controller
         $user->save();
 
         return redirect()->route('admin.dashboard')->with('success', 'Le rôle de l\'utilisateur a été mis à jour.');
+    }
+
+    // Ajoute un utilisateur à un projet
+    public function addMemberToProject(Request $request, $projectId)
+    {
+        $validatedData = $request->validate([
+            'user_id' => 'required|exists:users,id',
+        ]);
+
+        $project = Project::findOrFail($projectId);
+        $user = User::findOrFail($validatedData['user_id']);
+
+        // Assure que l'utilisateur est validé avant de l'ajouter au projet
+        if ($user->validated === 1) {
+            $project->users()->attach($user->id);
+            return redirect()->route('projects.show', $projectId)->with('success', 'Membre ajouté au projet avec succès.');
+        }
+
+        return redirect()->route('projects.show', $projectId)->withErrors(['user_id' => 'L\'utilisateur doit être validé avant de pouvoir être ajouté au projet.']);
+    }
+
+    // Retire un utilisateur d'un projet
+    public function removeMemberFromProject(Request $request, $projectId)
+    {
+        $validatedData = $request->validate([
+            'user_id' => 'required|exists:users,id',
+        ]);
+
+        $project = Project::findOrFail($projectId);
+        $user = User::findOrFail($validatedData['user_id']);
+
+        $project->users()->detach($user->id);
+
+        return redirect()->route('projects.show', $projectId)->with('success', 'Membre retiré du projet avec succès.');
     }
 
     // Redirige l'utilisateur vers le dashboard correspondant à son rôle

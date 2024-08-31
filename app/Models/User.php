@@ -25,7 +25,7 @@ class User extends Authenticatable
     // Relation Many-to-Many avec les projets
     public function projects()
     {
-        return $this->belongsToMany(Project::class, 'project_user', 'user_id', 'project_id');
+        return $this->belongsToMany(Project::class, 'project_members');
     }
 
     // Relation One-to-Many avec les tâches

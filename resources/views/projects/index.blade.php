@@ -32,34 +32,36 @@
         </div>
         <div class="card">
             <div class="card-body">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nom</th>
-                            <th>Statut</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($projects as $project)
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
                             <tr>
-                                <td>{{ $project->id }}</td>
-                                <td>{{ $project->name }}</td>
-                                <td>{{ $project->status }}</td>
-                                <td>
-                                    <a href="{{ route('projects.show', $project) }}" class="btn btn-info">Voir</a>
-                                    <a href="{{ route('projects.edit', $project) }}" class="btn btn-warning">Modifier</a>
-                                    <form action="{{ route('projects.destroy', $project) }}" method="POST" style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger">Supprimer</button>
-                                    </form>
-                                </td>
+                                <th>ID</th>
+                                <th>Nom</th>
+                                <th>Statut</th>
+                                <th>Actions</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach ($projects as $project)
+                                <tr>
+                                    <td>{{ $project->id }}</td>
+                                    <td>{{ $project->name }}</td>
+                                    <td>{{ $project->status }}</td>
+                                    <td>
+                                        <a href="{{ route('projects.show', $project) }}" class="btn btn-info">Voir</a>
+                                        <a href="{{ route('projects.edit', $project) }}" class="btn btn-warning">Modifier</a>
+                                        <form action="{{ route('projects.destroy', $project) }}" method="POST" style="display:inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce projet ?')">Supprimer</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </main>

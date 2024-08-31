@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Project; // Assurez-vous que le modèle Project existe
-use App\Models\User; // Assurez-vous que le modèle User existe
+use App\Models\Project;
+use App\Models\User;
 
 class ProjectController extends Controller
 {
@@ -25,6 +25,7 @@ class ProjectController extends Controller
     // Enregistre un nouveau projet
     public function store(Request $request)
     {
+        // Validation des données du formulaire
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -37,6 +38,7 @@ class ProjectController extends Controller
             'team_members.*' => 'exists:users,id',
         ]);
 
+        // Création du projet
         $project = Project::create([
             'name' => $validatedData['name'],
             'description' => $validatedData['description'],
@@ -44,12 +46,13 @@ class ProjectController extends Controller
             'start_date' => $validatedData['start_date'],
             'end_date' => $validatedData['end_date'],
             'budget' => $validatedData['budget'],
-            'user_id' => $validatedData['project_manager'],
+            'project_manager_id' => $validatedData['project_manager'], // Assurez-vous que la colonne s'appelle bien 'project_manager_id'
         ]);
 
-
-
-        $project->users()->attach($validatedData['team_members']); // Associe les membres d'équipe au projet
+        // Association des membres d'équipe au projet
+        if (!empty($validatedData['team_members'])) {
+            $project->users()->attach($validatedData['team_members']);
+        }
 
         return redirect()->route('projects.index')->with('success', 'Projet créé avec succès.');
     }
@@ -72,6 +75,7 @@ class ProjectController extends Controller
     // Met à jour un projet existant
     public function update(Request $request, $id)
     {
+        // Validation des données du formulaire
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -79,15 +83,29 @@ class ProjectController extends Controller
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
             'budget' => 'nullable|numeric',
-            'user_id' => 'required|exists:users,id',
+            'project_manager_id' => 'required|exists:users,id', // Assurez-vous que la colonne s'appelle bien 'project_manager_id'
             'team_members' => 'nullable|array',
             'team_members.*' => 'exists:users,id',
         ]);
 
-        $project = Project::findOrFail($id); // Trouve le projet ou lance une exception si non trouvé
-        $project->update($validatedData); // Met à jour les informations du projet
+        // Trouve le projet et met à jour ses informations
+        $project = Project::findOrFail($id);
+        $project->update([
+            'name' => $validatedData['name'],
+            'description' => $validatedData['description'],
+            'status' => $validatedData['status'],
+            'start_date' => $validatedData['start_date'],
+            'end_date' => $validatedData['end_date'],
+            'budget' => $validatedData['budget'],
+            'project_manager_id' => $validatedData['project_manager_id'], // Assurez-vous que la colonne s'appelle bien 'project_manager_id'
+        ]);
 
-        $project->users()->sync($validatedData['team_members']); // Met à jour les membres d'équipe du projet
+        // Met à jour les membres d'équipe du projet
+        if (!empty($validatedData['team_members'])) {
+            $project->users()->sync($validatedData['team_members']);
+        } else {
+            $project->users()->detach();
+        }
 
         return redirect()->route('projects.index')->with('success', 'Projet mis à jour avec succès.');
     }

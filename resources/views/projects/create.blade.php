@@ -13,7 +13,7 @@
             <img src="{{ asset('image/logoP.png') }}" alt="Logo">
         </div>
         <ul>
-            <li><a href="#">Retour</a></li>
+            <li><a href="{{ route('projects.index') }}">Retour</a></li>
             <li><a href="#">Calendrier</a></li>
         </ul>
     </div>
@@ -24,27 +24,36 @@
         <div class="dashboard-container">
             <form action="{{ route('projects.store') }}" method="POST">
                 @csrf
-                <div class="form-row">
-                    <!-- Nom du Projet -->
-                    <div class="form-group">
-                        <label for="name" class="form-label">Nom du Projet</label>
-                        <input type="text" id="name" name="name" class="form-control" required>
-                    </div>
 
-                    <!-- Statut du Projet -->
-                    <div class="form-group">
-                        <label for="status" class="form-label">Statut</label>
-                        <select id="status" name="status" class="form-select" required>
-                            <option value="actif">Actif</option>
-                            <option value="suspendu">Suspendu</option>
-                        </select>
-                    </div>
+                <!-- Nom du Projet -->
+                <div class="form-group">
+                    <label for="name" class="form-label">Nom du Projet</label>
+                    <input type="text" id="name" name="name" class="form-control" required>
+                    @error('name')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <!-- Statut du Projet -->
+                <div class="form-group">
+                    <label for="status" class="form-label">Statut</label>
+                    <select id="status" name="status" class="form-select" required>
+                        <option value="actif">Actif</option>
+                        <option value="suspendu">Suspendu</option>
+                        <option value="terminer">Terminé</option>
+                    </select>
+                    @error('status')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
 
                 <!-- Description du Projet -->
                 <div class="form-group">
                     <label for="description" class="form-label">Description du Projet</label>
                     <textarea id="description" name="description" class="form-control" rows="5" required></textarea>
+                    @error('description')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
 
                 <div class="form-row">
@@ -52,12 +61,18 @@
                     <div class="form-group">
                         <label for="start_date" class="form-label">Date de Début</label>
                         <input type="date" id="start_date" name="start_date" class="form-control" required>
+                        @error('start_date')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <!-- Date de Fin -->
                     <div class="form-group">
                         <label for="end_date" class="form-label">Date de Fin</label>
                         <input type="date" id="end_date" name="end_date" class="form-control" required>
+                        @error('end_date')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
 
@@ -65,6 +80,9 @@
                 <div class="form-group">
                     <label for="budget" class="form-label">Budget</label>
                     <input type="number" id="budget" name="budget" class="form-control" step="0.01" required>
+                    @error('budget')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
 
                 <!-- Chef de Projet -->
@@ -75,6 +93,9 @@
                             <option value="{{ $user->id }}">{{ $user->name }}</option>
                         @endforeach
                     </select>
+                    @error('project_manager')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
 
                 <!-- Membres de l'Équipe -->
@@ -86,6 +107,9 @@
                         @endforeach
                     </select>
                     <small class="form-text">Maintenez la touche Ctrl (Windows) ou Cmd (Mac) pour sélectionner plusieurs membres.</small>
+                    @error('team_members')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
 
                 <!-- Bouton de Soumission -->
