@@ -101,8 +101,8 @@
                     <label for="team_members" class="form-label">Membres de l'Équipe</label>
                     <select id="team_members" name="team_members[]" class="form-control" multiple required>
                         @foreach($users as $user)
-                            <option value="{{ $user->id }}" {{ in_array($user->id, $project->team_members) ? 'selected' : '' }}>
-                                {{ $user->name }}
+                        <option value="{{ $user->id }}" {{ in_array($user->id, $project->team_members ?? []) ? 'selected' : '' }}>
+                            {{ $user->name }}
                             </option>
                         @endforeach
                     </select>

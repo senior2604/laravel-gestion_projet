@@ -27,4 +27,10 @@ class Project extends Model
         'start_date' => 'datetime',
         'end_date' => 'datetime',
     ];
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class)->withPivot('role');
+    }
+
 }

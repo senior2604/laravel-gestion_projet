@@ -1,10 +1,7 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Créer une Tâche</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 <body>
@@ -13,58 +10,76 @@
             <img src="{{ asset('image/logoP.png') }}" alt="Logo">
         </div>
         <ul>
+            <li><a href="{{ route('projects.index') }}" class="{{ request()->routeIs('projects.*') ? 'active' : '' }}">Projets</a></li>
             <li><a href="{{ route('tasks.index') }}" class="{{ request()->routeIs('tasks.*') ? 'active' : '' }}">Tâches</a></li>
-            <li><a href="javascript:history.back()">Retour</a></li>
+            <li><a href="{{ route('calendar.show') }}" class="{{ request()->routeIs('calendar.show') ? 'active' : '' }}">Calendrier</a></li>
+            <li><a href="{{ route('reports.create') }}" class="{{ request()->routeIs('reports.*') ? 'active' : '' }}">Rapports</a></li>
+            <li><a href="javascript:history.go(-1)">Retour</a>
+            </li>
         </ul>
-    </div>
 
+    </div>
     <div class="main-content">
-        <div class="dashboard-container">
-            <header>
-                <h1>Créer une Nouvelle Tâche</h1>
-            </header>
-            <main>
-                <form action="{{ route('tasks.store') }}" method="POST">
-                    @csrf
-                    <div class="form-group mb-3">
-                        <label for="name" class="form-label">Nom de la Tâche</label>
-                        <input type="text" id="name" name="name" class="form-control" required>
-                    </div>
+        <h1>Créer une Tâche</h1>
 
-                    <div class="form-group mb-3">
-                        <label for="description" class="form-label">Description de la Tâche</label>
-                        <textarea id="description" name="description" class="form-control" rows="4" required></textarea>
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="status" class="form-label">Statut</label>
-                        <select id="status" name="status" class="form-select" required>
-                            <option value="à faire">À faire</option>
-                            <option value="en cours">En cours</option>
-                            <option value="terminé">Terminé</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="assigned_to" class="form-label">Attribué à</label>
-                        <select id="assigned_to" name="assigned_to" class="form-select" required>
-                            @foreach ($users as $user)
-                                <option value="{{ $user->id }}">{{ $user->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">Créer la Tâche</button>
-                </form>
-            </main>
-
-        </div>
+        <form action="{{ route('tasks.store') }}" method="POST">
+            @csrf
+            <div class="form-group">
+                <label for="name">Nom</label>
+                <input type="text" id="name" name="name" class="form-control" value="{{ old('name') }}" required>
+                @error('name')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" class="form-control" rows="5">{{ old('description') }}</textarea>
+                @error('description')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="form-group">
+                <label for="status">Statut</label>
+                <select id="status" name="status" class="form-control" required>
+                    <option value="en_attente" {{ old('status') == 'en_attente' ? 'selected' : '' }}>En attente</option>
+                    <option value="en_cours" {{ old('status') == 'en_cours' ? 'selected' : '' }}>En cours</option>
+                    <option value="terminée" {{ old('status') == 'terminée' ? 'selected' : '' }}>Terminé</option>
+                </select>
+                @error('status')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="form-group">
+                <label for="project_id">Projet</label>
+                <select id="project_id" name="project_id" class="form-control" required>
+                    @foreach ($projects as $project)
+                        <option value="{{ $project->id }}" {{ old('project_id') == $project->id ? 'selected' : '' }}>
+                            {{ $project->name }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('project_id')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="form-group">
+                <label for="user_id">Utilisateur</label>
+                <select id="user_id" name="user_id" class="form-control" required>
+                    @foreach ($users as $user)
+                        <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>
+                            {{ $user->name }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('user_id')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+        </form>
     </div>
-    <footer class="footer mt-4">
-        <p>&copy; {{ date('Y') }} Application de Gestion de Projets</p>
+    <footer class="footer mt-auto">
+        <span>&copy; {{ date('Y') }} Application de Gestion de Projets. Tous droits réservés.</span>
     </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.min.js"></script>
 </body>
 </html>

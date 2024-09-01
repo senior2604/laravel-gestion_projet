@@ -1,10 +1,7 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Créer une Tâche</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <title>Liste des Tâches</title>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 <body>
@@ -13,61 +10,90 @@
             <img src="{{ asset('image/logoP.png') }}" alt="Logo">
         </div>
         <ul>
-            <li><a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">Tableau de Bord</a></li>
             <li><a href="{{ route('projects.index') }}" class="{{ request()->routeIs('projects.*') ? 'active' : '' }}">Projets</a></li>
             <li><a href="{{ route('tasks.index') }}" class="{{ request()->routeIs('tasks.*') ? 'active' : '' }}">Tâches</a></li>
-            <li><a href="javascript:history.back()">Retour</a></li>
-            <!-- Ajouter d'autres liens selon les besoins -->
+            <li><a href="{{ route('calendar.show') }}" class="{{ request()->routeIs('calendar.show') ? 'active' : '' }}">Calendrier</a></li>
+            <li><a href="{{ route('reports.create') }}" class="{{ request()->routeIs('reports.*') ? 'active' : '' }}">Rapports</a></li>
+            <li><a href="javascript:history.go(-1)">Retour</a>
+            </li>
         </ul>
-    </div>
 
+    </div>
     <div class="main-content">
-        <div class="dashboard-container">
-            <header>
-                <h1>Créer une Nouvelle Tâche</h1>
-            </header>
-            <main>
-                <form action="{{ route('tasks.store') }}" method="POST">
-                    @csrf
-                    <div class="form-group mb-3">
-                        <label for="name" class="form-label">Nom de la Tâche</label>
-                        <input type="text" id="name" name="name" class="form-control" required>
-                    </div>
+        <h1>Liste des Tâches</h1>
 
-                    <div class="form-group mb-3">
-                        <label for="description" class="form-label">Description de la Tâche</label>
-                        <textarea id="description" name="description" class="form-control" rows="4" required></textarea>
-                    </div>
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
 
-                    <div class="form-group mb-3">
-                        <label for="status" class="form-label">Statut</label>
-                        <select id="status" name="status" class="form-select" required>
-                            <option value="à faire">À faire</option>
-                            <option value="en cours">En cours</option>
-                            <option value="terminé">Terminé</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="assigned_to" class="form-label">Attribué à</label>
-                        <select id="assigned_to" name="assigned_to" class="form-select" required>
-                            @foreach ($users as $user)
-                                <option value="{{ $user->id }}">{{ $user->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">Créer la Tâche</button>
-                </form>
-            </main>
-
+        <div class="mb-3">
+            <a href="{{ route('tasks.create') }}" class="btn btn-primary">Créer une Tâche</a>
         </div>
-        <footer class="footer mt-4">
-            <p>&copy; {{ date('Y') }} Application de Gestion de Projets</p>
-        </footer>
-    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.min.js"></script>
+        <!-- Formulaire de recherche -->
+        <form method="GET" action="{{ route('tasks.index') }}" class="mb-4">
+            <div class="row">
+                <div class="col-md-4">
+                    <input type="text" name="search" class="form-control" placeholder="Rechercher par nom ou description" value="{{ request('search') }}">
+                </div>
+                <div class="col-md-4">
+                    <select name="status" class="form-control">
+                        <option value="">Filtrer par statut</option>
+                        <option value="à faire" {{ request('status') == 'à faire' ? 'selected' : '' }}>À faire</option>
+                        <option value="en cours" {{ request('status') == 'en cours' ? 'selected' : '' }}>En cours</option>
+                        <option value="terminé" {{ request('status') == 'terminé' ? 'selected' : '' }}>Terminé</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-success">Rechercher</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Table des tâches -->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Projet</th>
+                    <th>Utilisateur</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($tasks as $task)
+                    <tr>
+                        <td>{{ $task->id }}</td>
+                        <td>{{ $task->name }}</td>
+                        <td>{{ $task->description }}</td>
+                        <td>{{ $task->status }}</td>
+                        <td>{{ $task->project->name }}</td>
+                        <td>{{ $task->user->name }}</td>
+                        <td>
+                            <a href="{{ route('tasks.edit', $task->id) }}" class="btn btn-warning btn-sm">Modifier</a>
+                            <form action="{{ route('tasks.destroy', $task->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="7" class="text-center">Aucune tâche trouvée.</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+        <footer class="footer mt-auto">
+            <span>&copy; {{ date('Y') }} Application de Gestion de Projets. Tous droits réservés.</span>
+        </footer>
+  </div>
+
 </body>
 </html>

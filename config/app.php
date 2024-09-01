@@ -70,7 +70,8 @@ return [
     ],
 
     'aliases' => Facade::defaultAliases()->merge([
-        'PDF' => Barryvdh\DomPDF\Facade::class,  // <- Ajout de l'alias pour DomPDF
-    ])->toArray(),
+    'PDF' => Barryvdh\DomPDF\Facade::class,
+ ])->toArray(),
+
 
 ];

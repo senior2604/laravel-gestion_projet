@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use App\Models\Project;
 use App\Models\User;
-use App\Models\ProjectMember; // Importer le modèle ProjectMember
+use App\Models\ProjectMember;
+use App\Models\ProjectUser;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
@@ -32,17 +33,18 @@ class TaskController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'status' => 'required|in:à faire,en cours,terminé',
+            'status' => 'required|in:en_attente,en_cours,terminée',
             'project_id' => 'required|exists:projects,id',
             'user_id' => 'required|exists:users,id',
         ]);
 
         // Vérifier que l'utilisateur est membre du projet sélectionné
-        if (!ProjectMember::where('project_id', $request->project_id)
-                          ->where('user_id', $request->user_id)
-                          ->exists()) {
-            return redirect()->back()->withErrors(['user_id' => 'L\'utilisateur sélectionné n\'est pas membre du projet.']);
-        }
+        if (!ProjectUser::where('project_id', $request->project_id)
+                ->where('user_id', $request->user_id)
+                ->exists()) {
+    return redirect()->back()->withErrors(['user_id' => 'L\'utilisateur sélectionné n\'est pas membre du projet.']);
+}
+
 
         Task::create($request->all());
 
@@ -63,13 +65,13 @@ class TaskController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'status' => 'required|in:à faire,en cours,terminé',
+            'status' => 'required|in:en_attente,en_cours,terminée',
             'project_id' => 'required|exists:projects,id',
             'user_id' => 'required|exists:users,id',
         ]);
 
         // Vérifier que l'utilisateur est membre du projet sélectionné
-        if (!ProjectMember::where('project_id', $request->project_id)
+        if (!Projectuser::where('project_id', $request->project_id)
                           ->where('user_id', $request->user_id)
                           ->exists()) {
             return redirect()->back()->withErrors(['user_id' => 'L\'utilisateur sélectionné n\'est pas membre du projet.']);

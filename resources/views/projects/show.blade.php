@@ -6,6 +6,15 @@
     <title>Détails du Projet</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <style>
+        .table-bordered {
+            border: 1px solid #dee2e6;
+        }
+        .table-bordered th,
+        .table-bordered td {
+            border: 1px solid #dee2e6;
+        }
+    </style>
 </head>
 <body>
 
@@ -27,26 +36,55 @@
     </header>
 
     <main>
-        <div class="card mb-4">
-            <div class="card-body">
-                <dl class="row">
-                    <dt class="col-sm-3">Nom:</dt>
-                    <dd class="col-sm-9">{{ $project->name }}</dd>
+        <!-- Table des Détails du Projet -->
+    <table class="table table-bordered">
+        <tbody>
+            <tr>
+                <th>Nom</th>
+                <td>{{ $project->name }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ $project->description }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{ ucfirst($project->status) }}</td>
+            </tr>
+            <tr>
+                <th>Date de Début</th>
+                <td>{{ $project->start_date->format('d/m/Y') }}</td>
+            </tr>
+            <tr>
+                <th>Date de Fin</th>
+                <td>{{ $project->end_date->format('d/m/Y') }}</td>
+            </tr>
+            <tr>
+                <th>Budget</th>
+                <td>{{ $project->budget }}</td>
+            </tr>
+            <tr>
+                <th>Responsable du Projet</th>
+                <td>{{ $project->project_manager_id ? $project->projectManager->name : 'Non assigné' }}</td>
+            </tr>
+        </tbody>
+    </table>
+                <!-- Section Équipe -->
+                <div class="mt-4">
+                    <h3>Membres du Projet</h3>
+                    <table class="table table-bordered mt-3">
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Rôle</th>
+                                <th>Email</th>
+                            </tr>
+                        </thead>
 
-                    <dt class="col-sm-3">Description:</dt>
-                    <dd class="col-sm-9">{{ $project->description }}</dd>
+                    </table>
+                </div>
 
-                    <dt class="col-sm-3">Date de Début:</dt>
-                    <dd class="col-sm-9">{{ $project->start_date->format('d/m/Y') }}</dd>
-
-                    <dt class="col-sm-3">Date de Fin:</dt>
-                    <dd class="col-sm-9">{{ $project->end_date->format('d/m/Y') }}</dd>
-
-                    <dt class="col-sm-3">Statut:</dt>
-                    <dd class="col-sm-9">{{ ucfirst($project->status) }}</dd>
-                </dl>
-
-                <div class="d-flex justify-content-start">
+                <div class="d-flex justify-content-start mt-4">
                     <a href="{{ route('projects.edit', $project) }}" class="btn btn-warning me-2">Modifier le Projet</a>
                     <a href="{{ route('projects.index') }}" class="btn btn-secondary">Retour aux Projets</a>
                 </div>

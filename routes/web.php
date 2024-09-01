@@ -135,6 +135,9 @@ Route::post('/admin/create-project', [AdminController::class, 'createProject'])-
 Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('projects.show');
 Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
 
-Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar');
 
-Route::get('/generate-report', [ReportController::class, 'generateReport']);
+Route::get('/calendar', [CalendarController::class, 'showCalendar'])->name('calendar.show');
+
+
+Route::get('/reports/create', [ReportController::class, 'create'])->name('reports.create');
+Route::post('/reports', [ReportController::class, 'store'])->name('reports.store');

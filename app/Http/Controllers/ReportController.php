@@ -6,16 +6,23 @@ use PDF;
 
 class ReportController extends Controller
 {
-    public function generateReport()
+    // Afficher le formulaire de création
+    public function create()
     {
-        // Exemple de données pour le rapport
-        $data = [
-            'title' => 'Rapport de Projet',
-            'content' => 'Voici le contenu du rapport.',
-        ];
+        return view('reports.create');
+    }
 
-        // Générer le PDF à partir de la vue Blade
-        $pdf = PDF::loadView('reports.pdf', $data);
+    // Traiter la soumission du formulaire et générer le PDF
+    public function store(Request $request)
+    {
+        // Valider les données du formulaire
+        $validatedData = $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+        ]);
+
+        // Charger la vue à convertir en PDF
+        $pdf = PDF::loadView('reports.report', $validatedData);
 
         // Télécharger le PDF
         return $pdf->download('rapport.pdf');
