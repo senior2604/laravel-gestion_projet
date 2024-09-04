@@ -16,6 +16,7 @@
     <ul>
         <li><a href="{{ route('projects.index') }}">Projets</a></li>
         <li><a href="{{ route('tasks.index') }}">Tâches</a></li>
+        <li><a href="{{ url('/calendar') }}" class="{{ request()->is('calendar') ? 'active' : '' }}">Calendrier</a></li>
         <li><a href="{{ route('statistics.index') }}">Statistiques</a></li>
     </ul>
 </div>
@@ -53,7 +54,7 @@
                 <!-- Date de Début -->
                 <div class="mb-3">
                     <label for="start_date" class="form-label">Date de Début</label>
-                    <input type="date" id="start_date" name="start_date" value="{{ old('start_date', $project->start_date) }}" class="form-control" required>
+                    <input type="date" id="start_date" name="start_date" value="{{ old('start_date', $project->start_date->format('Y-m-d')) }}" class="form-control">
                     @error('start_date')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
@@ -62,8 +63,17 @@
                 <!-- Date de Fin -->
                 <div class="mb-3">
                     <label for="end_date" class="form-label">Date de Fin</label>
-                    <input type="date" id="end_date" name="end_date" value="{{ old('end_date', $project->end_date) }}" class="form-control" required>
+                    <input type="date" id="end_date" name="end_date" value="{{ old('end_date', $project->end_date->format('Y-m-d')) }}" class="form-control">
                     @error('end_date')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <!-- Budget -->
+                <div class="mb-3">
+                    <label for="budget" class="form-label">Budget</label>
+                    <input type="number" id="budget" name="budget" value="{{ old('budget', $project->budget) }}" class="form-control" step="0.01">
+                    @error('budget')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
                 </div>
@@ -86,7 +96,7 @@
                     <label for="project_manager_id" class="form-label">Chef de Projet</label>
                     <select id="project_manager_id" name="project_manager_id" class="form-control" required>
                         @foreach($users as $user)
-                            <option value="{{ $user->id }}" {{ $user->id == $project->project_manager_id ? 'selected' : '' }}>
+                            <option value="{{ $user->id }}" {{ old('project_manager_id', $project->project_manager_id) == $user->id ? 'selected' : '' }}>
                                 {{ $user->name }}
                             </option>
                         @endforeach
@@ -99,12 +109,14 @@
                 <!-- Membres de l'Équipe -->
                 <div class="mb-3">
                     <label for="team_members" class="form-label">Membres de l'Équipe</label>
-                    <select id="team_members" name="team_members[]" class="form-control" multiple required>
+                    <select id="team_members" name="team_members[]" class="form-control" multiple>
                         @foreach($users as $user)
-                        <option value="{{ $user->id }}" {{ in_array($user->id, $project->team_members ?? []) ? 'selected' : '' }}>
+                        <option value="{{ $user->id }}" {{ in_array($user->id, old('team_members', $projectMembers)) ? 'selected' : '' }}>
                             {{ $user->name }}
-                            </option>
+                        </option>
                         @endforeach
+                    </select>
+                    
                     </select>
                     <small class="form-text">Maintenez la touche Ctrl (Windows) ou Cmd (Mac) pour sélectionner plusieurs membres.</small>
                     @error('team_members')

@@ -12,12 +12,10 @@
         <ul>
             <li><a href="{{ route('projects.index') }}" class="{{ request()->routeIs('projects.*') ? 'active' : '' }}">Projets</a></li>
             <li><a href="{{ route('tasks.index') }}" class="{{ request()->routeIs('tasks.*') ? 'active' : '' }}">Tâches</a></li>
-            <li><a href="{{ route('calendar.show') }}" class="{{ request()->routeIs('calendar.show') ? 'active' : '' }}">Calendrier</a></li>
+            <li><a href="{{ url('/calendar') }}" class="{{ request()->is('calendar') ? 'active' : '' }}">Calendrier</a></li>
             <li><a href="{{ route('reports.create') }}" class="{{ request()->routeIs('reports.*') ? 'active' : '' }}">Rapports</a></li>
-            <li><a href="javascript:history.go(-1)">Retour</a>
-            </li>
+            <li><a href="javascript:history.go(-1)">Retour</a></li>
         </ul>
-
     </div>
     <div class="main-content">
         <h1>Créer une Tâche</h1>
@@ -35,6 +33,20 @@
                 <label for="description">Description</label>
                 <textarea id="description" name="description" class="form-control" rows="5">{{ old('description') }}</textarea>
                 @error('description')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="form-group">
+                <label for="start_date">Date de Début</label>
+                <input type="date" id="start_date" name="start_date" class="form-control" value="{{ old('start_date') }}">
+                @error('start_date')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="form-group">
+                <label for="end_date">Date de Fin</label>
+                <input type="date" id="end_date" name="end_date" class="form-control" value="{{ old('end_date') }}">
+                @error('end_date')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
             </div>

@@ -14,11 +14,13 @@ class TaskController extends Controller
     // Affiche la liste des tâches
     public function index()
     {
-        $tasks = Task::all();
+        $projects = Project::all();
+        $tasks = Task::with('project')->get();
+                $projects = Project::all();
         $users = User::all();
-        return view('tasks.index', compact('tasks', 'users'));
-    }
 
+        return view('tasks.index', compact('tasks', 'projects', 'users'));
+    }
     // Affiche le formulaire de création d'une tâche
     public function create()
     {
@@ -33,6 +35,8 @@ class TaskController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
             'status' => 'required|in:en_attente,en_cours,terminée',
             'project_id' => 'required|exists:projects,id',
             'user_id' => 'required|exists:users,id',
@@ -65,6 +69,8 @@ class TaskController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
             'status' => 'required|in:en_attente,en_cours,terminée',
             'project_id' => 'required|exists:projects,id',
             'user_id' => 'required|exists:users,id',

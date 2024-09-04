@@ -136,7 +136,9 @@ Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('pro
 Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
 
 
-Route::get('/calendar', [CalendarController::class, 'showCalendar'])->name('calendar.show');
+Route::get('/calendar', function () {
+    return view('calendar');
+});
 
 
 Route::get('/reports/create', [ReportController::class, 'create'])->name('reports.create');

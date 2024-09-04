@@ -26,6 +26,7 @@
         <li><a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">Tableau de Bord</a></li>
         <li><a href="{{ route('projects.index') }}" class="{{ request()->routeIs('projects.*') ? 'active' : '' }}">Projets</a></li>
         <li><a href="{{ route('tasks.index') }}" class="{{ request()->routeIs('tasks.*') ? 'active' : '' }}">Tâches</a></li>
+        <li><a href="{{ url('/calendar') }}" class="{{ request()->is('calendar') ? 'active' : '' }}">Calendrier</a></li>
         <!-- Ajouter d'autres liens selon les besoins -->
     </ul>
 </div>
@@ -37,61 +38,77 @@
 
     <main>
         <!-- Table des Détails du Projet -->
-    <table class="table table-bordered">
-        <tbody>
-            <tr>
-                <th>Nom</th>
-                <td>{{ $project->name }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ $project->description }}</td>
-            </tr>
-            <tr>
-                <th>Status</th>
-                <td>{{ ucfirst($project->status) }}</td>
-            </tr>
-            <tr>
-                <th>Date de Début</th>
-                <td>{{ $project->start_date->format('d/m/Y') }}</td>
-            </tr>
-            <tr>
-                <th>Date de Fin</th>
-                <td>{{ $project->end_date->format('d/m/Y') }}</td>
-            </tr>
-            <tr>
-                <th>Budget</th>
-                <td>{{ $project->budget }}</td>
-            </tr>
-            <tr>
-                <th>Responsable du Projet</th>
-                <td>{{ $project->project_manager_id ? $project->projectManager->name : 'Non assigné' }}</td>
-            </tr>
-        </tbody>
-    </table>
-                <!-- Section Équipe -->
-                <div class="mt-4">
-                    <h3>Membres du Projet</h3>
-                    <table class="table table-bordered mt-3">
-                        <thead>
-                            <tr>
-                                <th>Nom</th>
-                                <th>Rôle</th>
-                                <th>Email</th>
-                            </tr>
-                        </thead>
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <th>Nom</th>
+                    <td>{{ $project->name }}</td>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td>{{ $project->description }}</td>
+                </tr>
+                <tr>
+                    <th>Status</th>
+                    <td>{{ ucfirst($project->status) }}</td>
+                </tr>
+                <tr>
+                    <th>Date de Début</th>
+                    <td>{{ $project->start_date->format('d/m/Y') }}</td>
+                </tr>
+                <tr>
+                    <th>Date de Fin</th>
+                    <td>{{ $project->end_date->format('d/m/Y') }}</td>
+                </tr>
+                <tr>
+                    <th>Budget</th>
+                    <td>{{ $project->budget }}</td>
+                </tr>
+                <tr>
+                    <th>Responsable du Projet</th>
+                    <td>
+                        @if($project->Manager)
+                            {{ $project->Manager->name }}
+                        @else
+                            Non assigné
+                        @endif
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
-                    </table>
-                </div>
+        <!-- Section Équipe -->
+        <div class="mt-4">
+            <h3>Membres du Projet</h3>
+            <table class="table table-bordered mt-3">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($teamMembers as $user)
+                        <tr>
+                            <td>{{ $user->name }}</td>
+                            <td>{{ $user->email }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="3" class="text-center">Aucun membre assigné</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
 
-                <div class="d-flex justify-content-start mt-4">
-                    <a href="{{ route('projects.edit', $project) }}" class="btn btn-warning me-2">Modifier le Projet</a>
-                    <a href="{{ route('projects.index') }}" class="btn btn-secondary">Retour aux Projets</a>
-                </div>
-            </div>
+
+
+        <div class="d-flex justify-content-start mt-4">
+            <a href="{{ route('projects.edit', $project) }}" class="btn btn-warning me-2">Modifier le Projet</a>
+            <a href="{{ route('projects.index') }}" class="btn btn-secondary">Retour aux Projets</a>
         </div>
     </main>
-
 </div>
 
 <footer class="footer mt-4 py-3 bg-light text-center">

@@ -9,40 +9,72 @@
 <body>
     <header class="sidebar">
         <div class="logo">
-
-                <img src="{{ asset('image/logoP.png') }}" alt="Logo">
-
+            <img src="{{ asset('image/logoP.png') }}" alt="Logo">
         </div>
         <nav>
             <ul>
-            <li> <a href="javascript:history.back()">Retour</a></li>
-            <li><a href="#">Calendrier</a></li>
+
+                <li><a href="{{ url('/calendar') }}" class="{{ request()->is('calendar') ? 'active' : '' }}">Calendrier</a></li>
+                <li><a href="{{ route('reports.create') }}" class="{{ request()->routeIs('reports.*') ? 'active' : '' }}">Rapports</a></li>
+                <li><a href="javascript:history.go(-1)">Retour</a>
+                
             </ul>
         </nav>
     </header>
     <div class="main-content">
         <main class="dashboard-container">
-            <h1>Tableau de Bord </h1>
+            <h1>Tableau de Bord</h1>
             <h2>Mes Projets</h2>
             <div class="card">
                 <div class="card-header">Projets</div>
                 <div class="card-body">
-                    <ul>
-                        @foreach ($projects as $project)
-                            <li><a href="{{ route('member.show', $project) }}">{{ $project->name }}</a></li>
-                        @endforeach
-                    </ul>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nom du Projet</th>
+                                <th>Date de Début</th>
+                                <th>Date de Fin</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($projects as $project)
+                                <tr>
+                                    <td>{{ $project->name }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($project->start_date)->format('d F Y') }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($project->end_date)->format('d F Y') }}</td>
+                                    <td>{{ $project->status }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
+
             <h2>Mes Tâches</h2>
             <div class="card">
                 <div class="card-header">Tâches</div>
                 <div class="card-body">
-                    <ul>
-                        @foreach ($tasks as $task)
-                            <li>{{ $task->name }}</li>
-                        @endforeach
-                    </ul>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nom de la Tâche</th>
+                                <th>Date de Début</th>
+                                <th>Date de Fin</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($tasks as $task)
+                                <tr>
+                                    <td>{{ $task->name }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($task->start_date)->format('d F Y') }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($task->end_date)->format('d F Y') }}</td>
+                                    <td>{{ $task->status }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </main>

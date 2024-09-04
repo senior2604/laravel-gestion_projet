@@ -18,6 +18,9 @@
     "dependencies": {
         "@fullcalendar/core": "^6.1.15",
         "@fullcalendar/daygrid": "^6.1.15",
-        "@fullcalendar/interaction": "^6.1.15"
+        "@fullcalendar/interaction": "^6.1.15",
+        "jquery": "^3.7.1",
+        "jquery-ui": "^1.14.0",
+        "pikaday": "^1.8.2"
     }
 }

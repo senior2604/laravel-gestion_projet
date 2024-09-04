@@ -6,7 +6,6 @@
     <title>Créer un Projet</title>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
-
 </head>
 <body>
 
@@ -17,12 +16,10 @@
         <ul>
             <li><a href="{{ route('projects.index') }}" class="{{ request()->routeIs('projects.*') ? 'active' : '' }}">Projets</a></li>
             <li><a href="{{ route('tasks.index') }}" class="{{ request()->routeIs('tasks.*') ? 'active' : '' }}">Tâches</a></li>
-            <li><a href="{{ route('calendar.show') }}" class="{{ request()->routeIs('calendar.show') ? 'active' : '' }}">Calendrier</a></li>
+            <li><a href="{{ url('/calendar') }}" class="{{ request()->is('calendar') ? 'active' : '' }}">Calendrier</a></li>
             <li><a href="{{ route('reports.create') }}" class="{{ request()->routeIs('reports.*') ? 'active' : '' }}">Rapports</a></li>
-            <li><a href="javascript:history.go(-1)">Retour</a>
-            </li>
+            <li><a href="javascript:history.go(-1)">Retour</a></li>
         </ul>
-
     </div>
 
     <div class="main-content">
@@ -62,24 +59,18 @@
         <div class="form-row">
             <div class="form-group">
                 <label for="start_date">Date de Début</label>
-                <input type="date" id="start_date" name="start_date" class="form-control" required>
-                @error('start_date')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
+                <p>{{ $project->start_date ? $project->start_date->format('d/m/Y') : 'Non spécifiée' }}</p>
             </div>
 
             <div class="form-group">
                 <label for="end_date">Date de Fin</label>
-                <input type="date" id="end_date" name="end_date" class="form-control" required>
-                @error('end_date')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
+                <p>{{ $project->end_date ? $project->end_date->format('d/m/Y') : 'Non spécifiée' }}</p>
             </div>
         </div>
 
         <div class="form-group">
             <label for="budget">Budget</label>
-            <input type="number" id="budget" name="budget" class="form-control" step="0.01" required>
+            <input type="number" id="budget" name="budget" class="form-control" step="0.01">
             @error('budget')
                 <span class="text-danger">{{ $message }}</span>
             @enderror
@@ -108,12 +99,11 @@
             @error('team_members')
                 <span class="text-danger">{{ $message }}</span>
             @enderror
-
-
         </div>
 
         <button type="submit" class="btn btn-primary">Créer le Projet</button>
     </form>
+
     <footer class="footer mt-auto">
         <span>&copy; {{ date('Y') }} Application de Gestion de Projets. Tous droits réservés.</span>
     </footer>

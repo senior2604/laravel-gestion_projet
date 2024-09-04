@@ -17,6 +17,9 @@
         <li><a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">Tableau de Bord</a></li>
         <li><a href="{{ route('projects.index') }}" class="{{ request()->routeIs('projects.*') ? 'active' : '' }}">Projets</a></li>
         <li><a href="{{ route('tasks.index') }}" class="{{ request()->routeIs('tasks.*') ? 'active' : '' }}">Tâches</a></li>
+        <li><a href="{{ url('/calendar') }}" class="{{ request()->is('calendar') ? 'active' : '' }}">Calendrier</a></li>
+        <li><a href="javascript:history.go(-1)">Retour</a>
+
         <!-- Ajouter d'autres liens selon les besoins -->
     </ul>
 </div>
@@ -51,8 +54,14 @@
                                     <td>{{ $project->id }}</td>
                                     <td>{{ $project->name }}</td>
                                     <td>{{ Str::limit($project->description, 50) }}</td>
-                                    <td>{{ $project->start_date->format('d/m/Y') }}</td>
-                                    <td>{{ $project->end_date->format('d/m/Y') }}</td>
+                                    <td>
+                                        {{ $project->start_date ? $project->start_date->format('d/m/Y') : 'Non spécifiée' }}
+                                    </td>
+
+                                    <td>
+                                        {{ $project->end_date ? $project->end_date->format('d/m/Y') : 'Non spécifiée' }}
+                                    </td>
+
                                     <td>{{ ucfirst($project->status) }}</td>
                                     <td>
                                         <a href="{{ route('projects.show', $project) }}" class="btn btn-info btn-sm">Voir</a>

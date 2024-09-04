@@ -282,3 +282,146 @@ form .form-group {
     flex: 1;
     min-width: 250px;
 }
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f2f2f2;
+ }
+ .calendar-year {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Trois colonnes égales */
+    gap: 20px;
+    padding: 20px;
+    max-width: 1500px; /* Largeur maximale augmentée */
+    margin-top: 20px;
+}
+
+.calendar-month {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 500px; /* Largeur relative au conteneur */
+}
+
+.calendar-month-header {
+    background: #007bff;
+    color: white;
+    padding: 8px;
+    text-align: center;
+    font-size: 1.2em;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* Sept colonnes pour les jours de la semaine */
+    border-top: 1px solid #ccc;
+}
+
+.calendar-grid div {
+    padding: 15px; /* Augmente l'espace à l'intérieur des cases */
+    text-align: center;
+    border: 1px solid #ddd;
+    box-sizing: border-box; /* Inclut le padding et la bordure dans la largeur */
+}
+
+.calendar-day {
+    font-weight: bold;
+    background: #f8f8f8;
+}
+
+.calendar-empty {
+    background: #e0e0e0;
+}
+/* Styles pour le tableau des projets */
+.custom-project-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.custom-project-table th,
+.custom-project-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+.custom-project-table th {
+    background-color: #007bff;
+    color: #fff;
+    font-weight: bold;
+}
+
+.custom-project-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.custom-project-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.custom-project-table ul {
+    padding: 0;
+    list-style-type: none;
+    margin: 0;
+}
+
+.custom-project-table ul li {
+    padding: 5px 0;
+    border-bottom: 1px solid #ddd;
+}
+/* Styles pour les cartes des membres de l'équipe */
+.team-member-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.member-badge {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: #007bff; /* Couleur du badge, change selon tes besoins */
+    color: #fff;
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+
+.member-info h3 {
+    margin: 0;
+    font-size: 1.2em;
+    color: #333;
+}
+
+.member-info p {
+    margin: 4px 0;
+    color: #666;
+}
+
+.team-member-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}

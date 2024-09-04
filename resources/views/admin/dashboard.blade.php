@@ -14,15 +14,12 @@
         <img src="{{ asset('image/logoP.png') }}" alt="Logo">
     </div>
     <ul>
-        <li>
-            <a class="active" href="{{ route('projects.index') }}">Projets</a>
-        </li>
-        <li>
-            <a href="{{ route('tasks.index') }}">Tâches</a>
-        </li>
-        <li>
-            <a href="{{ route('statistics.index') }}">Statistiques</a>
-        </li>
+        <li><a class="active" href="{{ route('projects.index') }}">Projets</a></li>
+        <li><a href="{{ route('tasks.index') }}">Tâches</a></li>
+        <li><a href="{{ route('statistics.index') }}">Statistiques</a></li>
+        <li><a href="{{ url('/calendar') }}" class="{{ request()->is('calendar') ? 'active' : '' }}">Calendrier</a></li>
+        <li><a href="{{ route('reports.create') }}" class="{{ request()->routeIs('reports.*') ? 'active' : '' }}">Rapports</a></li>
+        <li><a href="javascript:history.go(-1)">Retour</a>
     </ul>
 </div>
 
