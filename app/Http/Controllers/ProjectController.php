@@ -19,7 +19,8 @@ class ProjectController extends Controller
     public function create()
     {
         $users = User::all();
-        return view('projects.create', compact('users'));
+        $project = new Project();
+        return view('projects.create', compact('users', 'project'));
     }
 
     public function store(Request $request)
